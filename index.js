@@ -82,6 +82,26 @@ FBBotFramework.prototype.send = function (recipient, messageData, notificationTy
 };
 
 
+FBBotFramework.prototype.senderAction = function (recipient,senderAction) {
+    notificationType = NOTIFICATION_TYPE.REGULAR;
+
+    var req = {
+        url: FB_MESSENGER_ENDPOINT,
+        qs: {access_token: this.page_token},
+        method: "POST",
+        json: {
+            recipient: {id: recipient},
+            sender_action: senderAction
+        }
+    };
+
+    request(req, function (err, res, body) {
+        //console.log("senderAction");
+    });
+
+};
+
+
 FBBotFramework.prototype.sendTextMessage = function (recipient, text, notificationType, cb) {
     var messageData = {text: text};
     this.send(recipient, messageData, notificationType, cb);
@@ -205,26 +225,6 @@ FBBotFramework.prototype.getUserProfile = function (userId, cb) {
         if (body.error) return cb(body.error);
         cb(null, body);
     });
-};
-
-// Bot Profile
-FBBotFramework.prototype.getBotProfile = function (fields, cb) {
-
-    var req = {
-        method: 'GET',
-        uri: FB_PROFILE_ENDPOINT + 'messenger_profile',
-        qs: {
-            fields: fields.join(),
-            access_token: this.page_token
-        },
-        json: true
-    };
-
-    request(req, function (err, res, body) {
-      if (err) return cb(err);
-      if (body.error) return cb(body.err);
-      cb(null, body);
-    })
 };
 
 // Middleware
@@ -397,6 +397,23 @@ FBBotFramework.prototype.sendListMessage = function (recipient, elements, notifi
 
     this.send(recipient, messageData, notificationType, cb);
 
+
+};
+
+FBBotFramework.prototype.sendListMessageButtons = function (recipient, elements, buttons, notificationType, cb) {
+    var messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "list",
+                "top_element_style": "compact",
+                "elements": elements,
+                "buttons": buttons
+            }
+        }
+    };
+
+    this.send(recipient, messageData, notificationType, cb);
 
 };
 
