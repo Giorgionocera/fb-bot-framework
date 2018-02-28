@@ -277,6 +277,11 @@ FBBotFramework.prototype.middleware = function () {
                     if (event.postback && event.postback.payload) {
                         bot.emit('postback', sender, event.postback.payload);
                     }
+                    
+                    // Trigger onAccountLinking Listener
+                    if (event.account_linking && event.account_linking.status) {
+                        bot.emit('accountLinking', sender, event.account_linking.status);
+                    }
 
                     // Trigger onAttachment Listener
                     if (event.message && event.message.attachments) {
