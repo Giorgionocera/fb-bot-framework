@@ -280,7 +280,7 @@ FBBotFramework.prototype.middleware = function () {
                     
                     // Trigger onAccountLinking Listener
                     if (event.account_linking) {
-                        bot.emit('accountLinking', sender, event.account_linking.status);
+                        bot.emit('account_linking', sender, event.account_linking.status);
                     }
 
                     // Trigger onAttachment Listener
