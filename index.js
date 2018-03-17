@@ -121,7 +121,7 @@ FBBotFramework.prototype.sendAudioAttachment = function (recipient, audioUrl, no
 FBBotFramework.prototype.sendVideoAttachment = function (recipient, videoUrl, notificationType, cb) {
     var messageData = {
         attachment: {
-            type: "file",
+            type: "video",
             payload: {url: videoUrl}
         }
     };
@@ -132,7 +132,7 @@ FBBotFramework.prototype.sendVideoAttachment = function (recipient, videoUrl, no
 FBBotFramework.prototype.sendFileAttachment = function (recipient, fileUrl, notificationType, cb) {
     var messageData = {
         attachment: {
-            type: "video",
+            type: "file",
             payload: {url: fileUrl}
         }
     };
