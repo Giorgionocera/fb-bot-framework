@@ -146,9 +146,9 @@ FBBotFramework.prototype.sendOpenGraph = function (recipient, openGrephUrl, noti
             type: "template",
             payload: {
                 template_type: "open_graph",
-                elements: [
+                elements: [{
                     url: openGrephUrl
-                ]
+                }]
             }
         }
     };
