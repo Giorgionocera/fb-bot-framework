@@ -140,6 +140,22 @@ FBBotFramework.prototype.sendFileAttachment = function (recipient, fileUrl, noti
     this.send(recipient, messageData, notificationType, cb);
 };
 
+FBBotFramework.prototype.sendOpenGraph = function (recipient, openGrephUrl, notificationType, cb) {
+    var messageData = {
+        attachment: {
+            type: "template",
+            payload: {
+                template_type: "open_graph",
+                elements: [
+                    url: openGrephUrl
+                ]
+            }
+        }
+    };
+
+    this.send(recipient, messageData, notificationType, cb);
+};
+
 // TODO: Audio, Video and File Upload
 
 FBBotFramework.prototype.sendImageMessage = function (recipient, imageUrl, notificationType, cb) {
