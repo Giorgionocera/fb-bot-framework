@@ -6,9 +6,9 @@ var EventEmitter = require('events').EventEmitter;
 
 var request = require("request");
 
-const FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v3/me/messages";
-const FB_PROFILE_ENDPOINT = "https://graph.facebook.com/v3/";
-const FB_SETTINGS_ENDPOINT = "https://graph.facebook.com/v3/me/thread_settings";
+const FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v2.6/me/messages";
+const FB_PROFILE_ENDPOINT = "https://graph.facebook.com/v2.6/";
+const FB_SETTINGS_ENDPOINT = "https://graph.facebook.com/v2.6/me/thread_settings";
 
 const NOTIFICATION_TYPE = {
     REGULAR: "REGULAR",
