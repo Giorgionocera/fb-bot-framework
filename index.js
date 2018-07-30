@@ -230,7 +230,7 @@ FBBotFramework.prototype.getUserProfile = function (userId, cb) {
         method: "GET",
         uri: FB_PROFILE_ENDPOINT + userId,
         qs: {
-            fields: 'first_name,last_name,profile_pic,locale,timezone,gender',
+            fields: 'first_name,last_name,profile_pic',
             access_token: this.page_token
         },
         json: true
