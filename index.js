@@ -58,7 +58,7 @@ FBBotFramework.prototype.verify = function (req, res) {
 
 // Send API, Details please visit https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
 
-FBBotFramework.prototype.send = function (recipient, messageData, messagingType = MESSAGING_TYPE.RESPONSE, tag = null notificationType, cb) {
+FBBotFramework.prototype.send = function (recipient, messageData, messagingType = MESSAGING_TYPE.RESPONSE, tag = null, notificationType, cb) {
     notificationType = notificationType || NOTIFICATION_TYPE.REGULAR;
 
     if (typeof notificationType === 'function') {
