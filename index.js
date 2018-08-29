@@ -6,14 +6,20 @@ var EventEmitter = require('events').EventEmitter;
 
 var request = require("request");
 
-const FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v2.6/me/messages";
-const FB_PROFILE_ENDPOINT = "https://graph.facebook.com/v2.6/";
-const FB_SETTINGS_ENDPOINT = "https://graph.facebook.com/v2.6/me/thread_settings";
+const FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v3.1/me/messages";
+const FB_PROFILE_ENDPOINT = "https://graph.facebook.com/v3.1/";
+const FB_SETTINGS_ENDPOINT = "https://graph.facebook.com/v3.1/me/thread_settings";
 
 const NOTIFICATION_TYPE = {
     REGULAR: "REGULAR",
     SILENT_PUSH: "SILENT_PUSH",
     NO_PUSH: "NO_PUSH"
+};
+
+const MESSAGING_TYPE = {
+    RESPONSE: "RESPONSE",
+    UPDATE: "UPDATE",
+    MESSAGE_TAG: "MESSAGE_TAG"
 };
 
 function FBBotFramework(options, cb) {
@@ -52,7 +58,7 @@ FBBotFramework.prototype.verify = function (req, res) {
 
 // Send API, Details please visit https://developers.facebook.com/docs/messenger-platform/send-api-reference#request
 
-FBBotFramework.prototype.send = function (recipient, messageData, notificationType, cb) {
+FBBotFramework.prototype.send = function (recipient, messageData, messagingType = MESSAGING_TYPE.RESPONSE , notificationType, cb) {
     notificationType = notificationType || NOTIFICATION_TYPE.REGULAR;
 
     if (typeof notificationType === 'function') {
@@ -65,6 +71,7 @@ FBBotFramework.prototype.send = function (recipient, messageData, notificationTy
         qs: {access_token: this.page_token},
         method: "POST",
         json: {
+            messaging_type: messagingType,
             recipient: {id: recipient},
             message: messageData,
             notification_type: notificationType
@@ -102,12 +109,12 @@ FBBotFramework.prototype.senderAction = function (recipient,senderAction) {
 };
 
 
-FBBotFramework.prototype.sendTextMessage = function (recipient, text, notificationType, cb) {
+FBBotFramework.prototype.sendTextMessage = function (recipient, text, messagingType, notificationType, cb) {
     var messageData = {text: text};
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 };
 
-FBBotFramework.prototype.sendAudioAttachment = function (recipient, audioUrl, notificationType, cb) {
+FBBotFramework.prototype.sendAudioAttachment = function (recipient, audioUrl, messagingType, notificationType, cb) {
     var messageData = {
         attachment: {
             type: "audio",
@@ -115,10 +122,10 @@ FBBotFramework.prototype.sendAudioAttachment = function (recipient, audioUrl, no
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 };
 
-FBBotFramework.prototype.sendVideoAttachment = function (recipient, videoUrl, notificationType, cb) {
+FBBotFramework.prototype.sendVideoAttachment = function (recipient, videoUrl, messagingType, notificationType, cb) {
     var messageData = {
         attachment: {
             type: "video",
@@ -126,10 +133,10 @@ FBBotFramework.prototype.sendVideoAttachment = function (recipient, videoUrl, no
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 };
 
-FBBotFramework.prototype.sendFileAttachment = function (recipient, fileUrl, notificationType, cb) {
+FBBotFramework.prototype.sendFileAttachment = function (recipient, fileUrl, messagingType, notificationType, cb) {
     var messageData = {
         attachment: {
             type: "file",
@@ -137,10 +144,10 @@ FBBotFramework.prototype.sendFileAttachment = function (recipient, fileUrl, noti
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 };
 
-FBBotFramework.prototype.sendOpenGraph = function (recipient, openGrephUrl, notificationType, cb) {
+FBBotFramework.prototype.sendOpenGraph = function (recipient, openGrephUrl, messagingType, notificationType, cb) {
     var messageData = {
         attachment: {
             type: "template",
@@ -153,12 +160,12 @@ FBBotFramework.prototype.sendOpenGraph = function (recipient, openGrephUrl, noti
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 };
 
 // TODO: Audio, Video and File Upload
 
-FBBotFramework.prototype.sendImageMessage = function (recipient, imageUrl, notificationType, cb) {
+FBBotFramework.prototype.sendImageMessage = function (recipient, imageUrl, messagingType, notificationType, cb) {
     var messageData = {
         attachment: {
             type: "image",
@@ -166,10 +173,10 @@ FBBotFramework.prototype.sendImageMessage = function (recipient, imageUrl, notif
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 };
 
-FBBotFramework.prototype.sendButtonMessage = function (recipient, text, buttons, notificationType, cb) {
+FBBotFramework.prototype.sendButtonMessage = function (recipient, text, buttons, messagingType, notificationType, cb) {
 
     var messageData = {
         attachment: {
@@ -182,7 +189,7 @@ FBBotFramework.prototype.sendButtonMessage = function (recipient, text, buttons,
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 };
 
 
@@ -193,7 +200,7 @@ FBBotFramework.prototype.sendButtonMessage = function (recipient, text, buttons,
 // Call-to-action items: 3 buttons
 // Bubbles per message (horizontal scroll): 10 elements
 
-FBBotFramework.prototype.sendBubbleMessage = FBBotFramework.prototype.sendGenericMessage = function (recipient, elements, notificationType, cb) {
+FBBotFramework.prototype.sendBubbleMessage = FBBotFramework.prototype.sendGenericMessage = function (recipient, elements, messagingType, notificationType, cb) {
     var messageData = {
         attachment: {
             type: "template",
@@ -204,11 +211,11 @@ FBBotFramework.prototype.sendBubbleMessage = FBBotFramework.prototype.sendGeneri
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 
 };
 
-FBBotFramework.prototype.sendReceiptMessage = function (recipient, receipt, notificationType, cb) {
+FBBotFramework.prototype.sendReceiptMessage = function (recipient, receipt, messagingType, notificationType, cb) {
 
     if (!receipt.template_type) {
         receipt.template_type = "receipt";
@@ -221,7 +228,7 @@ FBBotFramework.prototype.sendReceiptMessage = function (recipient, receipt, noti
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 };
 
 FBBotFramework.prototype.getUserProfile = function (userId, cb) {
@@ -382,28 +389,27 @@ FBBotFramework.prototype.setPersistentMenu = function (menuButtons, cb) {
     });
 };
 
-
-FBBotFramework.prototype.sendQuickReplies = function (recipient, text, replies, notificationType, cb) {
+FBBotFramework.prototype.sendQuickReplies = function (recipient, text, replies, messagingType, notificationType, cb) {
     var messageData = {
         text: text,
         quick_replies: replies
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 
 };
 
-FBBotFramework.prototype.sendLocationRequest = function (recipient, text, notificationType, cb) {
+FBBotFramework.prototype.sendLocationRequest = function (recipient, text, messagingType, notificationType, cb) {
     var messageData = {
         text: text,
         quick_replies: [{content_type: "location"}]
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 
 };
 
-FBBotFramework.prototype.sendListMessage = function (recipient, elements, notificationType, cb) {
+FBBotFramework.prototype.sendListMessage = function (recipient, elements, messagingType, notificationType, cb) {
 
     var messageData = {
         "attachment": {
@@ -416,12 +422,12 @@ FBBotFramework.prototype.sendListMessage = function (recipient, elements, notifi
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 
 
 };
 
-FBBotFramework.prototype.sendListMessageButtons = function (recipient, elements, buttons, notificationType, cb) {
+FBBotFramework.prototype.sendListMessageButtons = function (recipient, elements, buttons, messagingType, notificationType, cb) {
     var messageData = {
         "attachment": {
             "type": "template",
@@ -434,7 +440,7 @@ FBBotFramework.prototype.sendListMessageButtons = function (recipient, elements,
         }
     };
 
-    this.send(recipient, messageData, notificationType, cb);
+    this.send(recipient, messageData, messagingType, notificationType, cb);
 
 };
 
