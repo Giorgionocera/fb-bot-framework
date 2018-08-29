@@ -276,53 +276,53 @@ FBBotFramework.prototype.middleware = function () {
                 res.send({});
 
                 var messageData = JSON.parse(data);
-                (messageData.entry).forEach(function (messagingEvent) {
-                    // var messagingEvent = messageData.entry[0].messaging;
-                    messagingEvent.forEach(function (event) {
+                // (messageData.entry).forEach(function (messagingEvent) {
+                var messagingEvent = messageData.entry[0].messaging;
+                messagingEvent.forEach(function (event) {
 
-                        if(event.sender) {
-                            // Extract senderID, i.e. recipient
-                            var sender = event.sender.id;
-                        }
+                    if(event.sender) {
+                        // Extract senderID, i.e. recipient
+                        var sender = event.sender.id;
+                    }
 
-                        // Trigger onEcho Listener
-                        if (event.message && event.message.is_echo) {
-                            return bot.emit('echo', event.recipient.id, event.message.text);
-                        }
+                    // Trigger onEcho Listener
+                    if (event.message && event.message.is_echo) {
+                        return bot.emit('echo', event.recipient.id, event.message.text);
+                    }
 
-                        // Trigger quickyReply Listener
-                        if (event.message && event.message.quick_reply) {
-                            return bot.emit('quickreply', sender, event.message.quick_reply.payload);
-                        }
+                    // Trigger quickyReply Listener
+                    if (event.message && event.message.quick_reply) {
+                        return bot.emit('quickreply', sender, event.message.quick_reply.payload);
+                    }
 
-                        // Trigger onMessage Listener
-                        if (event.message && event.message.text) {
-                            bot.emit('message', sender, event.message.text);
-                        }
+                    // Trigger onMessage Listener
+                    if (event.message && event.message.text) {
+                        bot.emit('message', sender, event.message.text);
+                    }
 
-                        // Trigger onPostback Listener
-                        if (event.postback && event.postback.payload) {
-                            bot.emit('postback', sender, event.postback.payload);
-                        }
+                    // Trigger onPostback Listener
+                    if (event.postback && event.postback.payload) {
+                        bot.emit('postback', sender, event.postback.payload);
+                    }
 
-                        // Trigger onAccountLinking Listener
-                        if (event.account_linking && event.account.status) {
-                            bot.emit('account_linking', sender, event.account_linking.status);
-                        }
+                    // Trigger onAccountLinking Listener
+                    if (event.account_linking && event.account.status) {
+                        bot.emit('account_linking', sender, event.account_linking.status);
+                    }
 
-                        // Trigger onPolicyEnforcement Listener
-                        if (event["policy-enforcement"]) {
-                            bot.emit('policy_enforcement', event["policy-enforcement"].action, event["policy-enforcement"].reason, event.timestamp);
-                        }
+                    // Trigger onPolicyEnforcement Listener
+                    if (event["policy-enforcement"]) {
+                        bot.emit('policy_enforcement', event["policy-enforcement"].action, event["policy-enforcement"].reason, event.timestamp);
+                    }
 
-                        // Trigger onAttachment Listener
-                        if (event.message && event.message.attachments) {
-                            bot.emit('attachment', sender, event.message.attachments);
-                        }
+                    // Trigger onAttachment Listener
+                    if (event.message && event.message.attachments) {
+                        bot.emit('attachment', sender, event.message.attachments);
+                    }
 
-                    });
                 });
             });
+            // });
 
         }
     };
