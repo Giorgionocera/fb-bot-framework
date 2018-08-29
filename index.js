@@ -312,7 +312,7 @@ FBBotFramework.prototype.middleware = function () {
 
                         // Trigger onPolicyEnforcement Listener
                         if (event["policy-enforcement"]) {
-                            bot.emit('policy_enforcement', event["policy-enforcement"].action, event["policy-enforcement"].reason);
+                            bot.emit('policy_enforcement', event["policy-enforcement"].action, event["policy-enforcement"].reason, event.timestamp);
                         }
 
                         // Trigger onAttachment Listener
