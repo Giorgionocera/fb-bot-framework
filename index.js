@@ -306,7 +306,7 @@ FBBotFramework.prototype.middleware = function () {
                     }
 
                     // Trigger onAccountLinking Listener
-                    if (event.account_linking && event.account.status) {
+                    if (event.account_linking) {
                         bot.emit('account_linking', sender, event.account_linking.status);
                     }
 
