@@ -340,9 +340,9 @@ FBBotFramework.prototype.middleware = function () {
                     }
 
                     // Trigger onPassThreadControl Listener
-                    // if (event.pass_thread_control) {
+                    if (event["pass_thread_control"]) {
                         bot.emit('pass_thread_control', sender);
-                    // }
+                    }
 
                 });
             });
