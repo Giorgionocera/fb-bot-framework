@@ -9,6 +9,7 @@ var request = require("request");
 const FB_MESSENGER_ENDPOINT = "https://graph.facebook.com/v3.1/me/messages";
 const FB_PROFILE_ENDPOINT = "https://graph.facebook.com/v3.1/";
 const FB_SETTINGS_ENDPOINT = "https://graph.facebook.com/v3.1/me/thread_settings";
+const FB_PASS_THREAD_CONTROL_ENDPOINT = "https://graph.facebook.com/v3.1/me/pass_thread_control";
 
 const NOTIFICATION_TYPE = {
     REGULAR: "REGULAR",
@@ -85,6 +86,24 @@ FBBotFramework.prototype.send = function (recipient, messageData, messagingType 
             if (body.error) return cb(body.error);
             cb(null, body);
         }
+    });
+
+};
+
+FBBotFramework.prototype.passInboxControl = function (recipient,metadata = "") {
+    var req = {
+        url: FB_PASS_THREAD_CONTROL_ENDPOINT,
+        qs: {access_token: this.page_token},
+        method: "POST",
+        json: {
+            recipient: {id: recipient},
+            target_app_id: 263902037430900,
+            metadata: metadata
+        }
+    };
+
+    request(req, function (err, res, body) {
+        //console.log("senderAction");
     });
 
 };
