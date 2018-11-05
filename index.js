@@ -339,6 +339,11 @@ FBBotFramework.prototype.middleware = function () {
                         bot.emit('attachment', sender, event.message.attachments);
                     }
 
+                    // Trigger onPassThreadControl Listener
+                    if (event.pass_thread_control) {
+                        bot.emit('pass_thread_control', sender);
+                    }
+
                 });
             });
             // });
