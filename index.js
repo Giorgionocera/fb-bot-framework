@@ -299,6 +299,8 @@ FBBotFramework.prototype.middleware = function () {
                 var messagingEvent = messageData.entry[0].messaging;
                 messagingEvent.forEach(function (event) {
 
+                    console.log(event);
+                    
                     if(event.sender) {
                         // Extract senderID, i.e. recipient
                         var sender = event.sender.id;
