@@ -196,6 +196,17 @@ FBBotFramework.prototype.sendImageMessage = function (recipient, imageUrl, messa
     this.send(recipient, messageData, messagingType, tag, notificationType, cb);
 };
 
+FBBotFramework.prototype.sendImageMessageById = function (recipient, imageId, messagingType, tag, notificationType, cb) {
+    var messageData = {
+        attachment: {
+            type: "image",
+            payload: {attachment_id: imageId}
+        }
+    };
+
+    this.send(recipient, messageData, messagingType, tag, notificationType, cb);
+};
+
 FBBotFramework.prototype.sendButtonMessage = function (recipient, text, buttons, messagingType, tag, notificationType, cb) {
 
     var messageData = {
